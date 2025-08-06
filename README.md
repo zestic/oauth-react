@@ -25,6 +25,11 @@ yarn add @zestic/oauth-react @zestic/oauth-core
 pnpm add @zestic/oauth-react @zestic/oauth-core
 ```
 
+## Requirements
+
+- Node.js 20 or higher
+- React 18 or higher
+
 ## Quick Start
 
 ### 1. Configure OAuth
@@ -130,7 +135,7 @@ Examples for different React frameworks are available in the `examples/` directo
 
 ### Prerequisites
 
-- Node.js 16+
+- Node.js 20+
 - npm, yarn, or pnpm
 
 ### Setup
