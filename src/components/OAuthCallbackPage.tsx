@@ -12,7 +12,11 @@ interface OAuthCallbackPageProps {
  * OAuth callback page component
  * Handles the OAuth callback flow and displays appropriate status messages
  */
-export function OAuthCallbackPage({ config, onSuccess: _onSuccess, onError }: OAuthCallbackPageProps) {
+export function OAuthCallbackPage({
+  config,
+  onSuccess: _onSuccess,
+  onError,
+}: OAuthCallbackPageProps) {
   const { status, message, error, handleCallback } = useOAuthCallback(config);
 
   useEffect(() => {

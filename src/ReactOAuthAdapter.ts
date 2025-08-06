@@ -9,12 +9,7 @@ import { WebPKCEAdapter } from './adapters/WebPKCEAdapter';
  */
 export class ReactOAuthAdapter extends OAuthAdapter {
   constructor(config: OAuthConfig) {
-    super(
-      config,
-      new WebStorageAdapter(),
-      new WebHttpAdapter(),
-      new WebPKCEAdapter()
-    );
+    super(config, new WebStorageAdapter(), new WebHttpAdapter(), new WebPKCEAdapter());
   }
 
   /**

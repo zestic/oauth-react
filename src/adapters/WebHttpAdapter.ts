@@ -23,7 +23,9 @@ export class WebHttpAdapter implements HttpAdapter {
         ok: response.ok,
       };
     } catch (error) {
-      throw new Error(`Network request failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(
+        `Network request failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 }

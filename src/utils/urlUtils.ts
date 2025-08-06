@@ -8,11 +8,11 @@
 export function extractQueryParams(url: string): Record<string, string> {
   const urlObj = new URL(url);
   const params: Record<string, string> = {};
-  
+
   urlObj.searchParams.forEach((value, key) => {
     params[key] = value;
   });
-  
+
   return params;
 }
 
@@ -21,13 +21,13 @@ export function extractQueryParams(url: string): Record<string, string> {
  */
 export function buildUrlWithParams(baseUrl: string, params: Record<string, string>): string {
   const url = new URL(baseUrl);
-  
+
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
       url.searchParams.set(key, value);
     }
   });
-  
+
   return url.toString();
 }
 
@@ -57,13 +57,13 @@ export function extractFragmentParams(url: string): Record<string, string> {
   const urlObj = new URL(url);
   const fragment = urlObj.hash.substring(1); // Remove the '#'
   const params: Record<string, string> = {};
-  
+
   if (fragment) {
     const searchParams = new URLSearchParams(fragment);
     searchParams.forEach((value, key) => {
       params[key] = value;
     });
   }
-  
+
   return params;
 }

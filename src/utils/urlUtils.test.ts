@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 import {
   extractQueryParams,
   buildUrlWithParams,
-  getCurrentBaseUrl,
   isValidRedirectUri,
   extractFragmentParams,
 } from './urlUtils';
@@ -12,7 +11,7 @@ describe('urlUtils', () => {
     it('should extract query parameters from URL', () => {
       const url = 'https://example.com/callback?code=123&state=abc';
       const params = extractQueryParams(url);
-      
+
       expect(params).toEqual({
         code: '123',
         state: 'abc',
@@ -22,7 +21,7 @@ describe('urlUtils', () => {
     it('should return empty object for URL without query params', () => {
       const url = 'https://example.com/callback';
       const params = extractQueryParams(url);
-      
+
       expect(params).toEqual({});
     });
   });
@@ -32,15 +31,21 @@ describe('urlUtils', () => {
       const baseUrl = 'https://example.com/auth';
       const params = { client_id: '123', redirect_uri: 'https://app.com/callback' };
       const result = buildUrlWithParams(baseUrl, params);
-      
-      expect(result).toBe('https://example.com/auth?client_id=123&redirect_uri=https%3A%2F%2Fapp.com%2Fcallback');
+
+      expect(result).toBe(
+        'https://example.com/auth?client_id=123&redirect_uri=https%3A%2F%2Fapp.com%2Fcallback'
+      );
     });
 
     it('should skip null and undefined values', () => {
       const baseUrl = 'https://example.com/auth';
-      const params = { client_id: '123', state: null as any, scope: undefined as any };
+      const params = {
+        client_id: '123',
+        state: null as string | null,
+        scope: undefined as string | undefined,
+      };
       const result = buildUrlWithParams(baseUrl, params);
-      
+
       expect(result).toBe('https://example.com/auth?client_id=123');
     });
   });
@@ -61,7 +66,7 @@ describe('urlUtils', () => {
     it('should extract fragment parameters from URL', () => {
       const url = 'https://example.com/callback#access_token=123&token_type=bearer';
       const params = extractFragmentParams(url);
-      
+
       expect(params).toEqual({
         access_token: '123',
         token_type: 'bearer',
@@ -71,7 +76,7 @@ describe('urlUtils', () => {
     it('should return empty object for URL without fragment', () => {
       const url = 'https://example.com/callback';
       const params = extractFragmentParams(url);
-      
+
       expect(params).toEqual({});
     });
   });

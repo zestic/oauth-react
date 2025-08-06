@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/utils/urlUtils.test.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1754494024164,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1754494034014,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -36,9 +36,9 @@\n     });\n \n     it('should skip null and undefined values', () => {\n       const baseUrl = 'https://example.com/auth';\n-      const params = { client_id: '123', state: null as any, scope: undefined as any };\n+      const params = { client_id: '123', state: null as string | null, scope: undefined as string | undefined };\n       const result = buildUrlWithParams(baseUrl, params);\n       \n       expect(result).toBe('https://example.com/auth?client_id=123');\n     });\n"
+                }
+            ],
+            "date": 1754494024164,
+            "name": "Commit-0",
+            "content": "import { describe, it, expect } from 'vitest';\nimport {\n  extractQueryParams,\n  buildUrlWithParams,\n  isValidRedirectUri,\n  extractFragmentParams,\n} from './urlUtils';\n\ndescribe('urlUtils', () => {\n  describe('extractQueryParams', () => {\n    it('should extract query parameters from URL', () => {\n      const url = 'https://example.com/callback?code=123&state=abc';\n      const params = extractQueryParams(url);\n      \n      expect(params).toEqual({\n        code: '123',\n        state: 'abc',\n      });\n    });\n\n    it('should return empty object for URL without query params', () => {\n      const url = 'https://example.com/callback';\n      const params = extractQueryParams(url);\n      \n      expect(params).toEqual({});\n    });\n  });\n\n  describe('buildUrlWithParams', () => {\n    it('should build URL with query parameters', () => {\n      const baseUrl = 'https://example.com/auth';\n      const params = { client_id: '123', redirect_uri: 'https://app.com/callback' };\n      const result = buildUrlWithParams(baseUrl, params);\n      \n      expect(result).toBe('https://example.com/auth?client_id=123&redirect_uri=https%3A%2F%2Fapp.com%2Fcallback');\n    });\n\n    it('should skip null and undefined values', () => {\n      const baseUrl = 'https://example.com/auth';\n      const params = { client_id: '123', state: null as any, scope: undefined as any };\n      const result = buildUrlWithParams(baseUrl, params);\n      \n      expect(result).toBe('https://example.com/auth?client_id=123');\n    });\n  });\n\n  describe('isValidRedirectUri', () => {\n    it('should return true for valid HTTP URLs', () => {\n      expect(isValidRedirectUri('http://localhost:3000/callback')).toBe(true);\n      expect(isValidRedirectUri('https://example.com/auth/callback')).toBe(true);\n    });\n\n    it('should return false for invalid URLs', () => {\n      expect(isValidRedirectUri('invalid-url')).toBe(false);\n      expect(isValidRedirectUri('ftp://example.com')).toBe(false);\n    });\n  });\n\n  describe('extractFragmentParams', () => {\n    it('should extract fragment parameters from URL', () => {\n      const url = 'https://example.com/callback#access_token=123&token_type=bearer';\n      const params = extractFragmentParams(url);\n      \n      expect(params).toEqual({\n        access_token: '123',\n        token_type: 'bearer',\n      });\n    });\n\n    it('should return empty object for URL without fragment', () => {\n      const url = 'https://example.com/callback';\n      const params = extractFragmentParams(url);\n      \n      expect(params).toEqual({});\n    });\n  });\n});\n"
+        }
+    ]
+}

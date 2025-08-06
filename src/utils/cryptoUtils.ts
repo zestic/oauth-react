@@ -52,9 +52,11 @@ export async function sha256Base64Url(input: string): Promise<string> {
  * Checks if the Web Crypto API is available
  */
 export function isWebCryptoAvailable(): boolean {
-  return typeof crypto !== 'undefined' && 
-         typeof crypto.subtle !== 'undefined' && 
-         typeof crypto.getRandomValues === 'function';
+  return (
+    typeof crypto !== 'undefined' &&
+    typeof crypto.subtle !== 'undefined' &&
+    typeof crypto.getRandomValues === 'function'
+  );
 }
 
 /**
@@ -64,11 +66,11 @@ export function generateUUID(): string {
   if (typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID();
   }
-  
+
   // Fallback implementation
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0;
-    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }

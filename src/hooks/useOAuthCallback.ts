@@ -25,17 +25,17 @@ export function useOAuthCallback(config: OAuthConfig): UseOAuthCallbackResult {
       setError(null);
 
       const adapter = new ReactOAuthAdapter(config);
-      
+
       // Extract URL parameters
       const urlParams = new URLSearchParams(window.location.search);
       const params = Object.fromEntries(urlParams.entries());
-      
+
       const result = await adapter.handleCallback(params);
 
       if (result.success) {
         setStatus('success');
         setMessage('OAuth authentication successful!');
-        
+
         // Navigate to main app after delay
         setTimeout(() => {
           window.location.href = '/';
