@@ -1,5 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
-import { OAuthTokens } from '../types/oauth-core';
+import { OAuthResult } from '@zestic/oauth-core';
+
+interface OAuthTokens {
+  accessToken: string;
+  refreshToken?: string;
+  expiresIn?: number;
+}
 
 interface OAuthState {
   isAuthenticated: boolean;
@@ -10,6 +16,7 @@ interface OAuthState {
 
 interface UseOAuthStateResult extends OAuthState {
   setTokens: (tokens: OAuthTokens | null) => void;
+  setResult: (result: OAuthResult) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   clearState: () => void;
@@ -35,6 +42,23 @@ export function useOAuthState(): UseOAuthStateResult {
       error: null,
     }));
   }, []);
+
+  const setResult = useCallback((result: OAuthResult) => {
+    if (result.success && result.accessToken) {
+      const tokens: OAuthTokens = {
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken,
+        expiresIn: result.expiresIn,
+      };
+      setTokens(tokens);
+    } else {
+      setState(current => ({
+        ...current,
+        error: result.error || 'Authentication failed',
+        isLoading: false,
+      }));
+    }
+  }, [setTokens]);
 
   const setLoading = useCallback((isLoading: boolean) => {
     setState(current => ({
@@ -69,6 +93,7 @@ export function useOAuthState(): UseOAuthStateResult {
   return {
     ...state,
     setTokens,
+    setResult,
     setLoading,
     setError,
     clearState,

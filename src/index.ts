@@ -19,12 +19,13 @@ export { WebPKCEAdapter } from './adapters/WebPKCEAdapter';
 export * from './utils/urlUtils';
 export * from './utils/cryptoUtils';
 
-// Re-export types from temporary oauth-core types for convenience
+// Re-export types from oauth-core for convenience
 export type {
   OAuthConfig,
-  OAuthTokens,
+  OAuthResult,
   StorageAdapter,
   HttpAdapter,
   PKCEAdapter,
-  PKCEParams,
-} from './types/oauth-core';
+  PKCEChallenge,
+  OAuthCore,
+} from '@zestic/oauth-core';

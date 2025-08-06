@@ -1,21 +1,23 @@
-import { PKCEAdapter, PKCEParams } from '../types/oauth-core';
+import { PKCEAdapter, PKCEChallenge } from '@zestic/oauth-core';
 
 /**
  * Web PKCE adapter using Web Crypto API
  * Implements the PKCEAdapter interface for browser environments
  */
 export class WebPKCEAdapter implements PKCEAdapter {
-  async generatePKCE(): Promise<PKCEParams> {
+  async generateCodeChallenge(): Promise<PKCEChallenge> {
     const codeVerifier = this.generateCodeVerifier();
-    const codeChallenge = await this.generateCodeChallenge(codeVerifier);
-    const state = crypto.randomUUID();
+    const codeChallenge = await this.generateCodeChallengeFromVerifier(codeVerifier);
 
     return {
       codeVerifier,
       codeChallenge,
       codeChallengeMethod: 'S256',
-      state,
     };
+  }
+
+  async generateState(): Promise<string> {
+    return crypto.randomUUID();
   }
 
   private generateCodeVerifier(): string {
@@ -27,7 +29,7 @@ export class WebPKCEAdapter implements PKCEAdapter {
       .replace(/=/g, '');
   }
 
-  private async generateCodeChallenge(codeVerifier: string): Promise<string> {
+  private async generateCodeChallengeFromVerifier(codeVerifier: string): Promise<string> {
     const encoder = new TextEncoder();
     const data = encoder.encode(codeVerifier);
     const digest = await crypto.subtle.digest('SHA-256', data);
@@ -35,9 +37,5 @@ export class WebPKCEAdapter implements PKCEAdapter {
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
       .replace(/=/g, '');
-  }
-
-  async validateState(storedState: string, receivedState: string): Promise<boolean> {
-    return storedState === receivedState;
   }
 }

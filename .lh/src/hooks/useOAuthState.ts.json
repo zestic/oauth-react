@@ -3,11 +3,23 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1754493709089,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1754494669472,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,13 @@\n import { useState, useCallback, useEffect } from 'react';\n-import { OAuthTokens } from '../types/oauth-core';\n+import { OAuthResult } from '@zestic/oauth-core';\n \n+interface OAuthTokens {\n+  accessToken: string;\n+  refreshToken?: string;\n+  expiresIn?: number;\n+}\n+\n interface OAuthState {\n   isAuthenticated: boolean;\n   tokens: OAuthTokens | null;\n   isLoading: boolean;\n@@ -9,8 +15,9 @@\n }\n \n interface UseOAuthStateResult extends OAuthState {\n   setTokens: (tokens: OAuthTokens | null) => void;\n+  setResult: (result: OAuthResult) => void;\n   setLoading: (loading: boolean) => void;\n   setError: (error: string | null) => void;\n   clearState: () => void;\n }\n"
+                },
+                {
+                    "date": 1754494684123,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -42,8 +42,25 @@\n       error: null,\n     }));\n   }, []);\n \n+  const setResult = useCallback((result: OAuthResult) => {\n+    if (result.success && result.accessToken) {\n+      const tokens: OAuthTokens = {\n+        accessToken: result.accessToken,\n+        refreshToken: result.refreshToken,\n+        expiresIn: result.expiresIn,\n+      };\n+      setTokens(tokens);\n+    } else {\n+      setState(current => ({\n+        ...current,\n+        error: result.error || 'Authentication failed',\n+        isLoading: false,\n+      }));\n+    }\n+  }, [setTokens]);\n+\n   const setLoading = useCallback((isLoading: boolean) => {\n     setState(current => ({\n       ...current,\n       isLoading,\n"
+                },
+                {
+                    "date": 1754494694475,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -92,8 +92,9 @@\n \n   return {\n     ...state,\n     setTokens,\n+    setResult,\n     setLoading,\n     setError,\n     clearState,\n   };\n"
                 }
             ],
             "date": 1754493709089,

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { OAuthConfig } from '../types/oauth-core';
+import { OAuthConfig } from '@zestic/oauth-core';
 import { useOAuthCallback } from '../hooks/useOAuthCallback';
 
 interface OAuthCallbackPageProps {

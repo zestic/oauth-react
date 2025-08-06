@@ -3,11 +3,19 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 2,
             "patches": [
                 {
                     "date": 1754493689932,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1754494639932,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import { useState, useCallback } from 'react';\n-import { OAuthConfig } from '../types/oauth-core';\n+import { OAuthConfig } from '@zestic/oauth-core';\n import { ReactOAuthAdapter } from '../ReactOAuthAdapter';\n \n interface UseOAuthCallbackResult {\n   status: 'processing' | 'success' | 'error';\n@@ -24,19 +24,19 @@\n       setMessage('Processing OAuth callback...');\n       setError(null);\n \n       const adapter = new ReactOAuthAdapter(config);\n-      \n+\n       // Extract URL parameters\n       const urlParams = new URLSearchParams(window.location.search);\n       const params = Object.fromEntries(urlParams.entries());\n-      \n+\n       const result = await adapter.handleCallback(params);\n \n       if (result.success) {\n         setStatus('success');\n         setMessage('OAuth authentication successful!');\n-        \n+\n         // Navigate to main app after delay\n         setTimeout(() => {\n           window.location.href = '/';\n         }, 1500);\n"
+                },
+                {
+                    "date": 1754494723630,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,11 +27,10 @@\n       const adapter = new ReactOAuthAdapter(config);\n \n       // Extract URL parameters\n       const urlParams = new URLSearchParams(window.location.search);\n-      const params = Object.fromEntries(urlParams.entries());\n \n-      const result = await adapter.handleCallback(params);\n+      const result = await adapter.handleCallback(urlParams);\n \n       if (result.success) {\n         setStatus('success');\n         setMessage('OAuth authentication successful!');\n"
                 }
             ],
             "date": 1754493689932,

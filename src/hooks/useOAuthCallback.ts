@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { OAuthConfig } from '../types/oauth-core';
+import { OAuthConfig } from '@zestic/oauth-core';
 import { ReactOAuthAdapter } from '../ReactOAuthAdapter';
 
 interface UseOAuthCallbackResult {
@@ -28,9 +28,8 @@ export function useOAuthCallback(config: OAuthConfig): UseOAuthCallbackResult {
 
       // Extract URL parameters
       const urlParams = new URLSearchParams(window.location.search);
-      const params = Object.fromEntries(urlParams.entries());
 
-      const result = await adapter.handleCallback(params);
+      const result = await adapter.handleCallback(urlParams);
 
       if (result.success) {
         setStatus('success');

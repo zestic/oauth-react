@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1754493662154,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1754494589067,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,24 +1,26 @@\n-import { PKCEAdapter, PKCEParams } from '../types/oauth-core';\n+import { PKCEAdapter, PKCEChallenge } from '@zestic/oauth-core';\n \n /**\n  * Web PKCE adapter using Web Crypto API\n  * Implements the PKCEAdapter interface for browser environments\n  */\n export class WebPKCEAdapter implements PKCEAdapter {\n-  async generatePKCE(): Promise<PKCEParams> {\n+  async generateCodeChallenge(): Promise<PKCEChallenge> {\n     const codeVerifier = this.generateCodeVerifier();\n-    const codeChallenge = await this.generateCodeChallenge(codeVerifier);\n-    const state = crypto.randomUUID();\n+    const codeChallenge = await this.generateCodeChallengeFromVerifier(codeVerifier);\n \n     return {\n       codeVerifier,\n       codeChallenge,\n       codeChallengeMethod: 'S256',\n-      state,\n     };\n   }\n \n+  async generateState(): Promise<string> {\n+    return crypto.randomUUID();\n+  }\n+\n   private generateCodeVerifier(): string {\n     const array = new Uint8Array(32);\n     crypto.getRandomValues(array);\n     return btoa(String.fromCharCode(...array))\n@@ -26,18 +28,14 @@\n       .replace(/\\//g, '_')\n       .replace(/=/g, '');\n   }\n \n-  private async generateCodeChallenge(codeVerifier: string): Promise<string> {\n+  private async generateCodeChallengeFromVerifier(codeVerifier: string): Promise<string> {\n     const encoder = new TextEncoder();\n     const data = encoder.encode(codeVerifier);\n     const digest = await crypto.subtle.digest('SHA-256', data);\n     return btoa(String.fromCharCode(...new Uint8Array(digest)))\n       .replace(/\\+/g, '-')\n       .replace(/\\//g, '_')\n       .replace(/=/g, '');\n   }\n-\n-  async validateState(storedState: string, receivedState: string): Promise<boolean> {\n-    return storedState === receivedState;\n-  }\n }\n"
                 }
             ],
             "date": 1754493662154,

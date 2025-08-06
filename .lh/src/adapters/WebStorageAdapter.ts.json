@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1754493647686,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1754494598889,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import { StorageAdapter } from '../types/oauth-core';\n+import { StorageAdapter } from '@zestic/oauth-core';\n \n /**\n  * Web storage adapter using localStorage\n  * Implements the StorageAdapter interface for browser environments\n"
                 }
             ],
             "date": 1754493647686,

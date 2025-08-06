@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1754493670967,
@@ -16,6 +16,10 @@
                 {
                     "date": 1754493756020,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,9 @@\n /**\n  * OAuth callback page component\n  * Handles the OAuth callback flow and displays appropriate status messages\n  */\n-export function OAuthCallbackPage({ config, onSuccess, onError }: OAuthCallbackPageProps) {\n+export function OAuthCallbackPage({ config, onSuccess: _onSuccess, onError }: OAuthCallbackPageProps) {\n   const { status, message, error, handleCallback } = useOAuthCallback(config);\n \n   useEffect(() => {\n     handleCallback();\n"
+                },
+                {
+                    "date": 1754494622143,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import { useEffect } from 'react';\n-import { OAuthConfig } from '../types/oauth-core';\n+import { OAuthConfig } from '@zestic/oauth-core';\n import { useOAuthCallback } from '../hooks/useOAuthCallback';\n \n interface OAuthCallbackPageProps {\n   config: OAuthConfig;\n@@ -11,9 +11,13 @@\n /**\n  * OAuth callback page component\n  * Handles the OAuth callback flow and displays appropriate status messages\n  */\n-export function OAuthCallbackPage({ config, onSuccess: _onSuccess, onError }: OAuthCallbackPageProps) {\n+export function OAuthCallbackPage({\n+  config,\n+  onSuccess: _onSuccess,\n+  onError,\n+}: OAuthCallbackPageProps) {\n   const { status, message, error, handleCallback } = useOAuthCallback(config);\n \n   useEffect(() => {\n     handleCallback();\n"
                 }
             ],
             "date": 1754493670967,

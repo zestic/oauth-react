@@ -1,4 +1,4 @@
-import { StorageAdapter } from '../types/oauth-core';
+import { StorageAdapter } from '@zestic/oauth-core';
 
 /**
  * Web storage adapter using localStorage
