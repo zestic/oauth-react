@@ -63,6 +63,7 @@ pids
 # IDE and editor files
 .vscode/
 .idea/
+.lh/
 *.swp
 *.swo
 *~
