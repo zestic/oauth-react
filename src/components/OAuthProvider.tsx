@@ -1,5 +1,5 @@
-import React, { createContext, useContext, ReactNode } from 'react';
-import { OAuthConfig } from '@zestic/oauth-core';
+import { createContext, useContext, ReactNode } from 'react';
+import { OAuthConfig } from '../types/oauth-core';
 
 interface OAuthContextValue {
   config: OAuthConfig;

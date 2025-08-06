@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/ReactOAuthAdapter.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1754493641464,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1754493718828,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,9 +27,9 @@\n \n   /**\n    * Handles OAuth callback from authorization server\n    */\n-  async handleCallback(params: Record<string, string>) {\n+  async handleCallback(_params: Record<string, string>) {\n     // Implementation will be added in Phase 1\n     return { success: false, error: 'Not implemented yet' };\n   }\n }\n"
+                }
+            ],
+            "date": 1754493641464,
+            "name": "Commit-0",
+            "content": "import { OAuthConfig, OAuthAdapter } from './types/oauth-core';\nimport { WebStorageAdapter } from './adapters/WebStorageAdapter';\nimport { WebHttpAdapter } from './adapters/WebHttpAdapter';\nimport { WebPKCEAdapter } from './adapters/WebPKCEAdapter';\n\n/**\n * React web adapter for OAuth authentication\n * Extends the core OAuth functionality with web-specific implementations\n */\nexport class ReactOAuthAdapter extends OAuthAdapter {\n  constructor(config: OAuthConfig) {\n    super(\n      config,\n      new WebStorageAdapter(),\n      new WebHttpAdapter(),\n      new WebPKCEAdapter()\n    );\n  }\n\n  /**\n   * Initiates OAuth flow by redirecting to authorization server\n   */\n  async startAuthFlow(): Promise<void> {\n    const authUrl = await this.getAuthorizationUrl();\n    window.location.href = authUrl;\n  }\n\n  /**\n   * Handles OAuth callback from authorization server\n   */\n  async handleCallback(params: Record<string, string>) {\n    // Implementation will be added in Phase 1\n    return { success: false, error: 'Not implemented yet' };\n  }\n}\n"
+        }
+    ]
+}

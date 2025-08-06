@@ -48,6 +48,8 @@ Object.defineProperty(window, 'location', {
 });
 
 // Reset all mocks before each test
+import { beforeEach } from 'vitest';
+
 beforeEach(() => {
   vi.clearAllMocks();
 });

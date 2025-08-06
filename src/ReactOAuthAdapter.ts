@@ -1,4 +1,4 @@
-import { OAuthConfig, OAuthAdapter } from '@zestic/oauth-core';
+import { OAuthConfig, OAuthAdapter } from './types/oauth-core';
 import { WebStorageAdapter } from './adapters/WebStorageAdapter';
 import { WebHttpAdapter } from './adapters/WebHttpAdapter';
 import { WebPKCEAdapter } from './adapters/WebPKCEAdapter';
@@ -28,7 +28,7 @@ export class ReactOAuthAdapter extends OAuthAdapter {
   /**
    * Handles OAuth callback from authorization server
    */
-  async handleCallback(params: Record<string, string>) {
+  async handleCallback(_params: Record<string, string>) {
     // Implementation will be added in Phase 1
     return { success: false, error: 'Not implemented yet' };
   }

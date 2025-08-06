@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { OAuthTokens } from '@zestic/oauth-core';
+import { OAuthTokens } from '../types/oauth-core';
 
 interface OAuthState {
   isAuthenticated: boolean;

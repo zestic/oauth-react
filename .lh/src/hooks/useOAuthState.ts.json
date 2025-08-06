@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/hooks/useOAuthState.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1754493709089,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1754493709089,
+            "name": "Commit-0",
+            "content": "import { useState, useCallback, useEffect } from 'react';\nimport { OAuthTokens } from '../types/oauth-core';\n\ninterface OAuthState {\n  isAuthenticated: boolean;\n  tokens: OAuthTokens | null;\n  isLoading: boolean;\n  error: string | null;\n}\n\ninterface UseOAuthStateResult extends OAuthState {\n  setTokens: (tokens: OAuthTokens | null) => void;\n  setLoading: (loading: boolean) => void;\n  setError: (error: string | null) => void;\n  clearState: () => void;\n}\n\n/**\n * React hook for managing OAuth authentication state\n * Provides centralized state management for OAuth tokens and authentication status\n */\nexport function useOAuthState(): UseOAuthStateResult {\n  const [state, setState] = useState<OAuthState>({\n    isAuthenticated: false,\n    tokens: null,\n    isLoading: false,\n    error: null,\n  });\n\n  const setTokens = useCallback((tokens: OAuthTokens | null) => {\n    setState(current => ({\n      ...current,\n      tokens,\n      isAuthenticated: !!tokens,\n      error: null,\n    }));\n  }, []);\n\n  const setLoading = useCallback((isLoading: boolean) => {\n    setState(current => ({\n      ...current,\n      isLoading,\n    }));\n  }, []);\n\n  const setError = useCallback((error: string | null) => {\n    setState(current => ({\n      ...current,\n      error,\n      isLoading: false,\n    }));\n  }, []);\n\n  const clearState = useCallback(() => {\n    setState({\n      isAuthenticated: false,\n      tokens: null,\n      isLoading: false,\n      error: null,\n    });\n  }, []);\n\n  // Check for existing tokens on mount\n  useEffect(() => {\n    // Implementation will check localStorage for existing tokens\n    // This will be implemented in Phase 2\n  }, []);\n\n  return {\n    ...state,\n    setTokens,\n    setLoading,\n    setError,\n    clearState,\n  };\n}\n"
+        }
+    ]
+}

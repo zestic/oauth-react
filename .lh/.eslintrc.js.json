@@ -1,0 +1,18 @@
+{
+    "sourceFile": ".eslintrc.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1754493818926,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1754493818926,
+            "name": "Commit-0",
+            "content": "module.exports = {\n  root: true,\n  env: {\n    browser: true,\n    es2020: true,\n    node: true,\n  },\n  extends: [\n    'eslint:recommended',\n    'plugin:@typescript-eslint/recommended',\n    'plugin:react/recommended',\n    'plugin:react-hooks/recommended',\n    'prettier',\n  ],\n  ignorePatterns: ['dist', '.eslintrc.js', 'vite.config.ts', 'vitest.config.ts'],\n  parser: '@typescript-eslint/parser',\n  parserOptions: {\n    ecmaVersion: 'latest',\n    sourceType: 'module',\n    ecmaFeatures: {\n      jsx: true,\n    },\n  },\n  plugins: ['react', 'react-hooks', '@typescript-eslint'],\n  rules: {\n    'react/react-in-jsx-scope': 'off',\n    'react/prop-types': 'off',\n    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],\n    '@typescript-eslint/explicit-function-return-type': 'off',\n    '@typescript-eslint/explicit-module-boundary-types': 'off',\n    '@typescript-eslint/no-explicit-any': 'warn',\n    'prefer-const': 'error',\n    'no-var': 'error',\n  },\n  settings: {\n    react: {\n      version: 'detect',\n    },\n  },\n};\n"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { OAuthConfig } from '@zestic/oauth-core';
+import { useEffect } from 'react';
+import { OAuthConfig } from '../types/oauth-core';
 import { useOAuthCallback } from '../hooks/useOAuthCallback';
 
 interface OAuthCallbackPageProps {
@@ -12,7 +12,7 @@ interface OAuthCallbackPageProps {
  * OAuth callback page component
  * Handles the OAuth callback flow and displays appropriate status messages
  */
-export function OAuthCallbackPage({ config, onSuccess, onError }: OAuthCallbackPageProps) {
+export function OAuthCallbackPage({ config, onSuccess: _onSuccess, onError }: OAuthCallbackPageProps) {
   const { status, message, error, handleCallback } = useOAuthCallback(config);
 
   useEffect(() => {

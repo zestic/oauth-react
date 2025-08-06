@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/hooks/useOAuthConfig.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1754493699966,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1754493699966,
+            "name": "Commit-0",
+            "content": "import { useState, useCallback } from 'react';\nimport { OAuthConfig } from '../types/oauth-core';\n\ninterface UseOAuthConfigResult {\n  config: OAuthConfig | null;\n  setConfig: (config: OAuthConfig) => void;\n  updateConfig: (updates: Partial<OAuthConfig>) => void;\n  clearConfig: () => void;\n}\n\n/**\n * React hook for managing OAuth configuration\n * Provides state management for OAuth configuration with update utilities\n */\nexport function useOAuthConfig(initialConfig?: OAuthConfig): UseOAuthConfigResult {\n  const [config, setConfigState] = useState<OAuthConfig | null>(initialConfig || null);\n\n  const setConfig = useCallback((newConfig: OAuthConfig) => {\n    setConfigState(newConfig);\n  }, []);\n\n  const updateConfig = useCallback((updates: Partial<OAuthConfig>) => {\n    setConfigState(current => {\n      if (!current) return null;\n      return { ...current, ...updates };\n    });\n  }, []);\n\n  const clearConfig = useCallback(() => {\n    setConfigState(null);\n  }, []);\n\n  return {\n    config,\n    setConfig,\n    updateConfig,\n    clearConfig,\n  };\n}\n"
+        }
+    ]
+}

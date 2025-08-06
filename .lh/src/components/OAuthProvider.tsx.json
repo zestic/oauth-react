@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/components/OAuthProvider.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1754493680449,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1754493764495,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import React, { createContext, useContext, ReactNode } from 'react';\n+import { createContext, useContext, ReactNode } from 'react';\n import { OAuthConfig } from '../types/oauth-core';\n \n interface OAuthContextValue {\n   config: OAuthConfig;\n"
+                }
+            ],
+            "date": 1754493680449,
+            "name": "Commit-0",
+            "content": "import React, { createContext, useContext, ReactNode } from 'react';\nimport { OAuthConfig } from '../types/oauth-core';\n\ninterface OAuthContextValue {\n  config: OAuthConfig;\n  // Additional context values will be added during implementation\n}\n\nconst OAuthContext = createContext<OAuthContextValue | null>(null);\n\ninterface OAuthProviderProps {\n  config: OAuthConfig;\n  children: ReactNode;\n}\n\n/**\n * OAuth context provider for React applications\n * Provides OAuth configuration and state management throughout the component tree\n */\nexport function OAuthProvider({ config, children }: OAuthProviderProps) {\n  const value: OAuthContextValue = {\n    config,\n    // Additional state management will be implemented in Phase 2\n  };\n\n  return <OAuthContext.Provider value={value}>{children}</OAuthContext.Provider>;\n}\n\n/**\n * Hook to access OAuth context\n */\nexport function useOAuthContext() {\n  const context = useContext(OAuthContext);\n  if (!context) {\n    throw new Error('useOAuthContext must be used within an OAuthProvider');\n  }\n  return context;\n}\n"
+        }
+    ]
+}

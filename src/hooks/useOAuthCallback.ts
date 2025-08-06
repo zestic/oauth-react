@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { OAuthConfig } from '@zestic/oauth-core';
+import { OAuthConfig } from '../types/oauth-core';
 import { ReactOAuthAdapter } from '../ReactOAuthAdapter';
 
 interface UseOAuthCallbackResult {

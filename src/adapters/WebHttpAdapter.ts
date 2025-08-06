@@ -1,4 +1,4 @@
-import { HttpAdapter, HttpRequest, HttpResponse } from '@zestic/oauth-core';
+import { HttpAdapter, HttpRequest, HttpResponse } from '../types/oauth-core';
 
 /**
  * Web HTTP adapter using fetch API

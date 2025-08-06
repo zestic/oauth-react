@@ -16,7 +16,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false,
     "noEmitOnError": true,
     "declaration": true,
     "declarationMap": true,

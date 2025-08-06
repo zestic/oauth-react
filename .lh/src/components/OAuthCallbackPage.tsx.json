@@ -1,0 +1,26 @@
+{
+    "sourceFile": "src/components/OAuthCallbackPage.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1754493670967,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1754493746211,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-import React, { useEffect } from 'react';\n+import { useEffect } from 'react';\n import { OAuthConfig } from '../types/oauth-core';\n import { useOAuthCallback } from '../hooks/useOAuthCallback';\n \n interface OAuthCallbackPageProps {\n"
+                },
+                {
+                    "date": 1754493756020,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,9 +11,9 @@\n /**\n  * OAuth callback page component\n  * Handles the OAuth callback flow and displays appropriate status messages\n  */\n-export function OAuthCallbackPage({ config, onSuccess, onError }: OAuthCallbackPageProps) {\n+export function OAuthCallbackPage({ config, onSuccess: _onSuccess, onError }: OAuthCallbackPageProps) {\n   const { status, message, error, handleCallback } = useOAuthCallback(config);\n \n   useEffect(() => {\n     handleCallback();\n"
+                }
+            ],
+            "date": 1754493670967,
+            "name": "Commit-0",
+            "content": "import React, { useEffect } from 'react';\nimport { OAuthConfig } from '../types/oauth-core';\nimport { useOAuthCallback } from '../hooks/useOAuthCallback';\n\ninterface OAuthCallbackPageProps {\n  config: OAuthConfig;\n  onSuccess?: (tokens: { accessToken: string; refreshToken?: string }) => void;\n  onError?: (error: string) => void;\n}\n\n/**\n * OAuth callback page component\n * Handles the OAuth callback flow and displays appropriate status messages\n */\nexport function OAuthCallbackPage({ config, onSuccess, onError }: OAuthCallbackPageProps) {\n  const { status, message, error, handleCallback } = useOAuthCallback(config);\n\n  useEffect(() => {\n    handleCallback();\n  }, [handleCallback]);\n\n  useEffect(() => {\n    if (status === 'error' && error && onError) {\n      onError(error);\n    }\n  }, [status, error, onError]);\n\n  const renderContent = () => {\n    switch (status) {\n      case 'processing':\n        return (\n          <div className=\"oauth-callback-processing\">\n            <div className=\"spinner\" />\n            <p>{message}</p>\n          </div>\n        );\n\n      case 'success':\n        return (\n          <div className=\"oauth-callback-success\">\n            <div className=\"success-icon\">✅</div>\n            <h2>Success!</h2>\n            <p>{message}</p>\n          </div>\n        );\n\n      case 'error':\n        return (\n          <div className=\"oauth-callback-error\">\n            <div className=\"error-icon\">❌</div>\n            <h2>Authentication Failed</h2>\n            <p>{message}</p>\n            {error && <p className=\"error-details\">{error}</p>}\n            <button onClick={() => (window.location.href = '/login')}>Try Again</button>\n          </div>\n        );\n\n      default:\n        return null;\n    }\n  };\n\n  return <div className=\"oauth-callback-container\">{renderContent()}</div>;\n}\n"
+        }
+    ]
+}

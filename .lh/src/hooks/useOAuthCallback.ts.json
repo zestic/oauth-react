@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/hooks/useOAuthCallback.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1754493689932,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1754493689932,
+            "name": "Commit-0",
+            "content": "import { useState, useCallback } from 'react';\nimport { OAuthConfig } from '../types/oauth-core';\nimport { ReactOAuthAdapter } from '../ReactOAuthAdapter';\n\ninterface UseOAuthCallbackResult {\n  status: 'processing' | 'success' | 'error';\n  message: string;\n  error: string | null;\n  handleCallback: () => Promise<void>;\n}\n\n/**\n * React hook for handling OAuth callback\n * Manages the OAuth callback flow state and provides callback handling function\n */\nexport function useOAuthCallback(config: OAuthConfig): UseOAuthCallbackResult {\n  const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');\n  const [message, setMessage] = useState('Processing OAuth callback...');\n  const [error, setError] = useState<string | null>(null);\n\n  const handleCallback = useCallback(async () => {\n    try {\n      setStatus('processing');\n      setMessage('Processing OAuth callback...');\n      setError(null);\n\n      const adapter = new ReactOAuthAdapter(config);\n      \n      // Extract URL parameters\n      const urlParams = new URLSearchParams(window.location.search);\n      const params = Object.fromEntries(urlParams.entries());\n      \n      const result = await adapter.handleCallback(params);\n\n      if (result.success) {\n        setStatus('success');\n        setMessage('OAuth authentication successful!');\n        \n        // Navigate to main app after delay\n        setTimeout(() => {\n          window.location.href = '/';\n        }, 1500);\n      } else {\n        throw new Error(result.error || 'OAuth authentication failed');\n      }\n    } catch (err) {\n      setStatus('error');\n      setError(err instanceof Error ? err.message : 'Unknown error occurred');\n      setMessage('OAuth authentication failed');\n    }\n  }, [config]);\n\n  return {\n    status,\n    message,\n    error,\n    handleCallback,\n  };\n}\n"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/adapters/WebStorageAdapter.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1754493647686,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1754493647686,
+            "name": "Commit-0",
+            "content": "import { StorageAdapter } from '../types/oauth-core';\n\n/**\n * Web storage adapter using localStorage\n * Implements the StorageAdapter interface for browser environments\n */\nexport class WebStorageAdapter implements StorageAdapter {\n  async setItem(key: string, value: string): Promise<void> {\n    try {\n      localStorage.setItem(key, value);\n    } catch (error) {\n      console.error('Failed to store item in localStorage:', error);\n      throw error;\n    }\n  }\n\n  async getItem(key: string): Promise<string | null> {\n    try {\n      return localStorage.getItem(key);\n    } catch (error) {\n      console.error('Failed to retrieve item from localStorage:', error);\n      return null;\n    }\n  }\n\n  async removeItem(key: string): Promise<void> {\n    try {\n      localStorage.removeItem(key);\n    } catch (error) {\n      console.error('Failed to remove item from localStorage:', error);\n      throw error;\n    }\n  }\n\n  async removeItems(keys: string[]): Promise<void> {\n    try {\n      keys.forEach(key => localStorage.removeItem(key));\n    } catch (error) {\n      console.error('Failed to remove items from localStorage:', error);\n      throw error;\n    }\n  }\n}\n"
+        }
+    ]
+}

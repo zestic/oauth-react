@@ -1,4 +1,4 @@
-import { PKCEAdapter, PKCEParams } from '@zestic/oauth-core';
+import { PKCEAdapter, PKCEParams } from '../types/oauth-core';
 
 /**
  * Web PKCE adapter using Web Crypto API
