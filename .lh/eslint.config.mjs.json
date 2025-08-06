@@ -1,0 +1,18 @@
+{
+    "sourceFile": "eslint.config.mjs",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1754496068885,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1754496068885,
+            "name": "Commit-0",
+            "content": "import { fixupConfigRules } from '@eslint/compat';\nimport { FlatCompat } from '@eslint/eslintrc';\nimport js from '@eslint/js';\nimport prettier from 'eslint-plugin-prettier';\nimport react from 'eslint-plugin-react';\nimport reactHooks from 'eslint-plugin-react-hooks';\nimport typescriptEslint from '@typescript-eslint/eslint-plugin';\nimport typescriptParser from '@typescript-eslint/parser';\nimport globals from 'globals';\nimport path from 'node:path';\nimport { fileURLToPath } from 'node:url';\n\nconst __filename = fileURLToPath(import.meta.url);\nconst __dirname = path.dirname(__filename);\nconst compat = new FlatCompat({\n  baseDirectory: __dirname,\n  recommendedConfig: js.configs.recommended,\n  allConfig: js.configs.all,\n});\n\nexport default [\n  {\n    files: ['**/*.{js,jsx,ts,tsx}'],\n    languageOptions: {\n      parser: typescriptParser,\n      parserOptions: {\n        ecmaVersion: 'latest',\n        sourceType: 'module',\n        ecmaFeatures: {\n          jsx: true,\n        },\n      },\n      globals: {\n        ...globals.browser,\n        ...globals.es2020,\n        ...globals.node,\n      },\n    },\n    plugins: {\n      react,\n      'react-hooks': reactHooks,\n      '@typescript-eslint': typescriptEslint,\n      prettier,\n    },\n    rules: {\n      ...js.configs.recommended.rules,\n      ...typescriptEslint.configs.recommended.rules,\n      ...react.configs.recommended.rules,\n      ...reactHooks.configs.recommended.rules,\n      'react/react-in-jsx-scope': 'off',\n      'react/prop-types': 'off',\n      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],\n      '@typescript-eslint/explicit-function-return-type': 'off',\n      '@typescript-eslint/explicit-module-boundary-types': 'off',\n      '@typescript-eslint/no-explicit-any': 'warn',\n      'prefer-const': 'error',\n      'no-var': 'error',\n      'prettier/prettier': [\n        'error',\n        {\n          semi: true,\n          trailingComma: 'es5',\n          singleQuote: true,\n          printWidth: 100,\n          tabWidth: 2,\n          useTabs: false,\n          bracketSpacing: true,\n          arrowParens: 'avoid',\n          endOfLine: 'lf',\n        },\n      ],\n    },\n    settings: {\n      react: {\n        version: 'detect',\n      },\n    },\n  },\n  {\n    ignores: ['dist/', 'node_modules/', 'examples/', '*.config.ts', '*.config.mjs'],\n  },\n];\n"
+        }
+    ]
+}

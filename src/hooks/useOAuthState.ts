@@ -43,22 +43,25 @@ export function useOAuthState(): UseOAuthStateResult {
     }));
   }, []);
 
-  const setResult = useCallback((result: OAuthResult) => {
-    if (result.success && result.accessToken) {
-      const tokens: OAuthTokens = {
-        accessToken: result.accessToken,
-        refreshToken: result.refreshToken,
-        expiresIn: result.expiresIn,
-      };
-      setTokens(tokens);
-    } else {
-      setState(current => ({
-        ...current,
-        error: result.error || 'Authentication failed',
-        isLoading: false,
-      }));
-    }
-  }, [setTokens]);
+  const setResult = useCallback(
+    (result: OAuthResult) => {
+      if (result.success && result.accessToken) {
+        const tokens: OAuthTokens = {
+          accessToken: result.accessToken,
+          refreshToken: result.refreshToken,
+          expiresIn: result.expiresIn,
+        };
+        setTokens(tokens);
+      } else {
+        setState(current => ({
+          ...current,
+          error: result.error || 'Authentication failed',
+          isLoading: false,
+        }));
+      }
+    },
+    [setTokens]
+  );
 
   const setLoading = useCallback((isLoading: boolean) => {
     setState(current => ({
