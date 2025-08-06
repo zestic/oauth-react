@@ -19,6 +19,9 @@ export { WebPKCEAdapter } from './adapters/WebPKCEAdapter';
 export * from './utils/urlUtils';
 export * from './utils/cryptoUtils';
 
+// Types
+export * from './types/NavigationTypes';
+
 // Re-export types from oauth-core for convenience
 export type {
   OAuthConfig,

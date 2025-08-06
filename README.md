@@ -66,17 +66,27 @@ function App() {
 ### 3. Create Callback Page
 
 ```typescript
-import { OAuthCallbackPage } from '@zestic/oauth-react';
+// React Router 6 example
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { OAuthCallbackPage, ReactRouterParameterExtractor } from '@zestic/oauth-react';
 
 function AuthCallback() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   return (
     <OAuthCallbackPage
       config={oauthConfig}
-      onSuccess={(tokens) => {
-        console.log('Authentication successful:', tokens);
+      parameterExtractor={new ReactRouterParameterExtractor(searchParams)}
+      onSuccess={(result) => {
+        console.log('Authentication successful:', result);
+        // Your app handles navigation
+        navigate('/dashboard');
       }}
       onError={(error) => {
         console.error('Authentication failed:', error);
+        // Your app handles error navigation
+        navigate('/login?error=oauth_failed');
       }}
     />
   );
@@ -91,11 +101,55 @@ import { ReactOAuthAdapter } from '@zestic/oauth-react';
 function LoginButton() {
   const handleLogin = async () => {
     const adapter = new ReactOAuthAdapter(oauthConfig);
-    await adapter.startAuthFlow();
+    const { url } = await adapter.generateAuthorizationUrl();
+
+    // Your app handles the redirect
+    window.location.href = url;
   };
 
   return <button onClick={handleLogin}>Login with OAuth</button>;
 }
+```
+
+## Navigation-Agnostic Design
+
+This library follows the same pattern as `@zestic/oauth-expo` - it's **navigation-agnostic**. This means:
+
+✅ **No hard-coded navigation** - Your app controls all routing
+✅ **Router flexibility** - Works with React Router, Next.js, or any routing solution
+✅ **Callback-based** - Uses `onSuccess`/`onError` callbacks instead of automatic redirects
+✅ **Parameter extraction** - Pluggable system for different router parameter handling
+
+### Router-Specific Examples
+
+#### React Router 6
+```typescript
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ReactRouterParameterExtractor } from '@zestic/oauth-react';
+
+// Use React Router's parameter extraction
+const [searchParams] = useSearchParams();
+const parameterExtractor = new ReactRouterParameterExtractor(searchParams);
+```
+
+#### Next.js
+```typescript
+import { useRouter } from 'next/router';
+import { CustomParameterExtractor } from '@zestic/oauth-react';
+
+// Use Next.js router
+const router = useRouter();
+const parameterExtractor = new CustomParameterExtractor(() =>
+  new URLSearchParams(window.location.search)
+);
+```
+
+#### Vanilla/Browser
+```typescript
+import { BrowserParameterExtractor } from '@zestic/oauth-react';
+
+// Use browser's window.location.search
+const parameterExtractor = new BrowserParameterExtractor();
 ```
 
 ## API Reference

@@ -1,33 +1,35 @@
-import { useEffect } from 'react';
-import { OAuthConfig } from '@zestic/oauth-core';
+import { OAuthConfig, OAuthResult } from '@zestic/oauth-core';
 import { useOAuthCallback } from '../hooks/useOAuthCallback';
+import { ParameterExtractor } from '../types/NavigationTypes';
 
-interface OAuthCallbackPageProps {
+export interface OAuthCallbackPageProps {
   config: OAuthConfig;
-  onSuccess?: (tokens: { accessToken: string; refreshToken?: string }) => void;
-  onError?: (error: string) => void;
+  onSuccess?: (result: OAuthResult) => void;
+  onError?: (error: Error) => void;
+  onRetry?: () => void;
+  parameterExtractor?: ParameterExtractor;
+  autoStart?: boolean;
 }
 
 /**
  * OAuth callback page component
  * Handles the OAuth callback flow and displays appropriate status messages
+ * Follows oauth-expo pattern with callback-based navigation
  */
 export function OAuthCallbackPage({
   config,
-  onSuccess: _onSuccess,
+  onSuccess,
   onError,
+  onRetry,
+  parameterExtractor,
+  autoStart = true,
 }: OAuthCallbackPageProps) {
-  const { status, message, error, handleCallback } = useOAuthCallback(config);
-
-  useEffect(() => {
-    handleCallback();
-  }, [handleCallback]);
-
-  useEffect(() => {
-    if (status === 'error' && error && onError) {
-      onError(error);
-    }
-  }, [status, error, onError]);
+  const { status, message, error, retry } = useOAuthCallback(config, {
+    onSuccess,
+    onError,
+    autoStart,
+    parameterExtractor,
+  });
 
   const renderContent = () => {
     switch (status) {
@@ -55,7 +57,7 @@ export function OAuthCallbackPage({
             <h2>Authentication Failed</h2>
             <p>{message}</p>
             {error && <p className="error-details">{error}</p>}
-            <button onClick={() => (window.location.href = '/login')}>Try Again</button>
+            <button onClick={onRetry || retry}>Try Again</button>
           </div>
         );
 

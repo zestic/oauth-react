@@ -19,11 +19,13 @@ export class ReactOAuthAdapter {
   }
 
   /**
-   * Initiates OAuth flow by redirecting to authorization server
+   * Generates authorization URL for OAuth flow
+   * The app is responsible for handling the redirect
    */
-  async startAuthFlow(): Promise<void> {
-    const { url } = await this.oauthCore.generateAuthorizationUrl();
-    window.location.href = url;
+  async generateAuthorizationUrl(
+    additionalParams?: Record<string, string>
+  ): Promise<{ url: string; state: string }> {
+    return await this.oauthCore.generateAuthorizationUrl(additionalParams);
   }
 
   /**

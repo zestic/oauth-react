@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 1,
+            "activePatchIndex": 2,
             "patches": [
                 {
                     "date": 1754493625623,
@@ -12,6 +12,10 @@
                 {
                     "date": 1754494706587,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,13 +18,14 @@\n // Utils\n export * from './utils/urlUtils';\n export * from './utils/cryptoUtils';\n \n-// Re-export types from temporary oauth-core types for convenience\n+// Re-export types from oauth-core for convenience\n export type {\n   OAuthConfig,\n-  OAuthTokens,\n+  OAuthResult,\n   StorageAdapter,\n   HttpAdapter,\n   PKCEAdapter,\n-  PKCEParams,\n-} from './types/oauth-core';\n+  PKCEChallenge,\n+  OAuthCore,\n+} from '@zestic/oauth-core';\n"
+                },
+                {
+                    "date": 1754498379353,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,8 +18,11 @@\n // Utils\n export * from './utils/urlUtils';\n export * from './utils/cryptoUtils';\n \n+// Types\n+export * from './types/NavigationTypes';\n+\n // Re-export types from oauth-core for convenience\n export type {\n   OAuthConfig,\n   OAuthResult,\n"
                 }
             ],
             "date": 1754493625623,

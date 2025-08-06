@@ -1,24 +1,37 @@
-import { useState, useCallback } from 'react';
-import { OAuthConfig } from '@zestic/oauth-core';
+import { useState, useCallback, useEffect } from 'react';
+import { OAuthConfig, OAuthResult } from '@zestic/oauth-core';
 import { ReactOAuthAdapter } from '../ReactOAuthAdapter';
+import { ParameterExtractor, BrowserParameterExtractor } from '../types/NavigationTypes';
 
-interface UseOAuthCallbackResult {
+export interface UseOAuthCallbackOptions {
+  onSuccess?: (result: OAuthResult) => void;
+  onError?: (error: Error) => void;
+  autoStart?: boolean;
+  parameterExtractor?: ParameterExtractor;
+}
+
+export interface UseOAuthCallbackResult {
   status: 'processing' | 'success' | 'error';
   message: string;
   error: string | null;
   handleCallback: () => Promise<void>;
+  retry: () => void;
 }
 
 /**
- * React hook for handling OAuth callback
- * Manages the OAuth callback flow state and provides callback handling function
+ * React hook for handling OAuth callback processing
+ * Manages the OAuth callback flow state and provides handlers
+ * Follows oauth-expo pattern with callback-based navigation
  */
-export function useOAuthCallback(config: OAuthConfig): UseOAuthCallbackResult {
+export function useOAuthCallback(
+  config: OAuthConfig,
+  options?: UseOAuthCallbackOptions
+): UseOAuthCallbackResult {
   const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
   const [message, setMessage] = useState('Processing OAuth callback...');
   const [error, setError] = useState<string | null>(null);
 
-  const handleCallback = useCallback(async () => {
+  const handleCallback = useCallback(async (): Promise<void> => {
     try {
       setStatus('processing');
       setMessage('Processing OAuth callback...');
@@ -26,33 +39,44 @@ export function useOAuthCallback(config: OAuthConfig): UseOAuthCallbackResult {
 
       const adapter = new ReactOAuthAdapter(config);
 
-      // Extract URL parameters
-      const urlParams = new URLSearchParams(window.location.search);
+      // Use pluggable parameter extractor or default to browser
+      const parameterExtractor = options?.parameterExtractor || new BrowserParameterExtractor();
+      const urlParams = parameterExtractor.getSearchParams();
 
       const result = await adapter.handleCallback(urlParams);
 
       if (result.success) {
         setStatus('success');
-        setMessage('OAuth authentication successful!');
-
-        // Navigate to main app after delay
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 1500);
+        setMessage('Authentication successful');
+        options?.onSuccess?.(result);
       } else {
         throw new Error(result.error || 'OAuth authentication failed');
       }
     } catch (err) {
       setStatus('error');
-      setError(err instanceof Error ? err.message : 'Unknown error occurred');
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      setError(errorMessage);
       setMessage('OAuth authentication failed');
+      options?.onError?.(err instanceof Error ? err : new Error(errorMessage));
     }
-  }, [config]);
+  }, [config, options]);
+
+  const retry = useCallback(() => {
+    handleCallback();
+  }, [handleCallback]);
+
+  // Auto-start if enabled (default: true)
+  useEffect(() => {
+    if (options?.autoStart !== false) {
+      handleCallback();
+    }
+  }, [handleCallback, options?.autoStart]);
 
   return {
     status,
     message,
     error,
     handleCallback,
+    retry,
   };
 }

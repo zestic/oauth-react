@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 3,
+            "activePatchIndex": 7,
             "patches": [
                 {
                     "date": 1754493670967,
@@ -20,6 +20,22 @@
                 {
                     "date": 1754494622143,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,6 +1,6 @@\n import { useEffect } from 'react';\n-import { OAuthConfig } from '../types/oauth-core';\n+import { OAuthConfig } from '@zestic/oauth-core';\n import { useOAuthCallback } from '../hooks/useOAuthCallback';\n \n interface OAuthCallbackPageProps {\n   config: OAuthConfig;\n@@ -11,9 +11,13 @@\n /**\n  * OAuth callback page component\n  * Handles the OAuth callback flow and displays appropriate status messages\n  */\n-export function OAuthCallbackPage({ config, onSuccess: _onSuccess, onError }: OAuthCallbackPageProps) {\n+export function OAuthCallbackPage({\n+  config,\n+  onSuccess: _onSuccess,\n+  onError,\n+}: OAuthCallbackPageProps) {\n   const { status, message, error, handleCallback } = useOAuthCallback(config);\n \n   useEffect(() => {\n     handleCallback();\n"
+                },
+                {
+                    "date": 1754498239298,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,12 +1,16 @@\n import { useEffect } from 'react';\n-import { OAuthConfig } from '@zestic/oauth-core';\n-import { useOAuthCallback } from '../hooks/useOAuthCallback';\n+import { OAuthConfig, OAuthResult } from '@zestic/oauth-core';\n+import { useOAuthCallback, UseOAuthCallbackOptions } from '../hooks/useOAuthCallback';\n+import { ParameterExtractor } from '../types/NavigationTypes';\n \n-interface OAuthCallbackPageProps {\n+export interface OAuthCallbackPageProps {\n   config: OAuthConfig;\n-  onSuccess?: (tokens: { accessToken: string; refreshToken?: string }) => void;\n-  onError?: (error: string) => void;\n+  onSuccess?: (result: OAuthResult) => void;\n+  onError?: (error: Error) => void;\n+  onRetry?: () => void;\n+  parameterExtractor?: ParameterExtractor;\n+  autoStart?: boolean;\n }\n \n /**\n  * OAuth callback page component\n"
+                },
+                {
+                    "date": 1754498251611,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,26 +14,25 @@\n \n /**\n  * OAuth callback page component\n  * Handles the OAuth callback flow and displays appropriate status messages\n+ * Follows oauth-expo pattern with callback-based navigation\n  */\n export function OAuthCallbackPage({\n   config,\n-  onSuccess: _onSuccess,\n+  onSuccess,\n   onError,\n+  onRetry,\n+  parameterExtractor,\n+  autoStart = true,\n }: OAuthCallbackPageProps) {\n-  const { status, message, error, handleCallback } = useOAuthCallback(config);\n+  const { status, message, error, retry } = useOAuthCallback(config, {\n+    onSuccess,\n+    onError,\n+    autoStart,\n+    parameterExtractor,\n+  });\n \n-  useEffect(() => {\n-    handleCallback();\n-  }, [handleCallback]);\n-\n-  useEffect(() => {\n-    if (status === 'error' && error && onError) {\n-      onError(error);\n-    }\n-  }, [status, error, onError]);\n-\n   const renderContent = () => {\n     switch (status) {\n       case 'processing':\n         return (\n"
+                },
+                {
+                    "date": 1754498262590,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -57,9 +57,9 @@\n             <div className=\"error-icon\">❌</div>\n             <h2>Authentication Failed</h2>\n             <p>{message}</p>\n             {error && <p className=\"error-details\">{error}</p>}\n-            <button onClick={() => (window.location.href = '/login')}>Try Again</button>\n+            <button onClick={onRetry || retry}>Try Again</button>\n           </div>\n         );\n \n       default:\n"
+                },
+                {
+                    "date": 1754498572507,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,6 @@\n-import { useEffect } from 'react';\n import { OAuthConfig, OAuthResult } from '@zestic/oauth-core';\n-import { useOAuthCallback, UseOAuthCallbackOptions } from '../hooks/useOAuthCallback';\n+import { useOAuthCallback } from '../hooks/useOAuthCallback';\n import { ParameterExtractor } from '../types/NavigationTypes';\n \n export interface OAuthCallbackPageProps {\n   config: OAuthConfig;\n"
                 }
             ],
             "date": 1754493670967,

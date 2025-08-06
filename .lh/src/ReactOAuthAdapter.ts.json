@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 2,
+            "activePatchIndex": 3,
             "patches": [
                 {
                     "date": 1754493641464,
@@ -16,6 +16,10 @@
                 {
                     "date": 1754494553956,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,35 +1,43 @@\n-import { OAuthConfig, OAuthAdapter } from './types/oauth-core';\n+import { OAuthConfig, OAuthCore, OAuthResult } from '@zestic/oauth-core';\n import { WebStorageAdapter } from './adapters/WebStorageAdapter';\n import { WebHttpAdapter } from './adapters/WebHttpAdapter';\n import { WebPKCEAdapter } from './adapters/WebPKCEAdapter';\n \n /**\n  * React web adapter for OAuth authentication\n- * Extends the core OAuth functionality with web-specific implementations\n+ * Wraps the core OAuth functionality with web-specific implementations\n  */\n-export class ReactOAuthAdapter extends OAuthAdapter {\n+export class ReactOAuthAdapter {\n+  private oauthCore: OAuthCore;\n+\n   constructor(config: OAuthConfig) {\n-    super(\n-      config,\n-      new WebStorageAdapter(),\n-      new WebHttpAdapter(),\n-      new WebPKCEAdapter()\n-    );\n+    this.oauthCore = new OAuthCore(config, {\n+      storage: new WebStorageAdapter(),\n+      http: new WebHttpAdapter(),\n+      pkce: new WebPKCEAdapter(),\n+    });\n   }\n \n   /**\n    * Initiates OAuth flow by redirecting to authorization server\n    */\n   async startAuthFlow(): Promise<void> {\n-    const authUrl = await this.getAuthorizationUrl();\n-    window.location.href = authUrl;\n+    const { url } = await this.oauthCore.generateAuthorizationUrl();\n+    window.location.href = url;\n   }\n \n   /**\n    * Handles OAuth callback from authorization server\n    */\n-  async handleCallback(_params: Record<string, string>) {\n-    // Implementation will be added in Phase 1\n-    return { success: false, error: 'Not implemented yet' };\n+  async handleCallback(params: Record<string, string> | URLSearchParams): Promise<OAuthResult> {\n+    const urlParams = params instanceof URLSearchParams ? params : new URLSearchParams(params);\n+    return await this.oauthCore.handleCallback(urlParams);\n   }\n+\n+  /**\n+   * Get the underlying OAuth core instance for advanced usage\n+   */\n+  getCore(): OAuthCore {\n+    return this.oauthCore;\n+  }\n }\n"
+                },
+                {
+                    "date": 1754498133759,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,13 +18,15 @@\n     });\n   }\n \n   /**\n-   * Initiates OAuth flow by redirecting to authorization server\n+   * Generates authorization URL for OAuth flow\n+   * The app is responsible for handling the redirect\n    */\n-  async startAuthFlow(): Promise<void> {\n-    const { url } = await this.oauthCore.generateAuthorizationUrl();\n-    window.location.href = url;\n+  async generateAuthorizationUrl(\n+    additionalParams?: Record<string, string>\n+  ): Promise<{ url: string; state: string }> {\n+    return await this.oauthCore.generateAuthorizationUrl(additionalParams);\n   }\n \n   /**\n    * Handles OAuth callback from authorization server\n"
                 }
             ],
             "date": 1754493641464,
